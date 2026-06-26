@@ -1,0 +1,10 @@
+# Startup Applications
+xwayland force
+
+# autotiling
+exec --no-startup-id autotiling
+
+# wallpaper
+exec --no-startup-id waypaper --restore
+# exec --no-startup-id variety --restore
+# exec_always swaybg -i ~/.config/sway/tokyonight.png -m fill

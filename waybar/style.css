@@ -1,0 +1,227 @@
+/* ============================================================
+   Waybar CSS — pixel art castle theme
+   Palette from fantasy-castle-pixel-art.jpg:
+     bg dark:    #1a1624   (night sky base)
+     bg mid:     #2e2640   (dark purple surface)
+     purple:     #7b6b9e   (clouds/sky)
+     purple hi:  #a08bc0   (light cloud highlights)
+     stone:      #c8bfd8   (castle stone, light text)
+     pink:       #c87fa0   (accent, castle trim)
+     teal:       #4a9e8a   (tree canopy)
+     water:      #3d4a7a   (lake/river)
+     text:       #e8dff0   (off-white, readable)
+     subtext:    #a899b8   (muted purple-gray)
+   ============================================================ */
+
+* {
+    font-family: "JetBrains Mono NF", "Creep2", monospace;
+    font-size: 12px;
+    border: none;
+    border-radius: 0;
+    padding: 0;
+    margin: 0;
+    min-height: 0;
+}
+
+window#waybar {
+    background-color: #1a1624;
+    /*background-color: transparent;*/
+    color: #e8dff0;
+    border-bottom: 2px solid #3d3355;
+    border: 1px solid #c87fa0;
+}
+
+/* Dividers between sections */
+.modules-left,
+.modules-center,
+.modules-right {
+    background: transparent;
+}
+
+/* ---- Workspaces ---- */
+/*#workspaces {
+    background: #1a1624;
+    margin: 0;
+    padding: 0 4px;
+    border: 1px solid #c87fa0;
+}*/
+
+#workspaces button {
+    /* Base color is overridden per-number via Pango in config */
+    color: #a899b8;
+    background: transparent;
+    padding: 0 8px;
+    border-bottom: 2px solid transparent;
+    border-radius: 0;
+    min-width: 24px;
+}
+
+#workspaces button:hover {
+    background: #2e2640;
+    color: #e8dff0;
+    border-bottom: 2px solid #7b6b9e;
+    box-shadow: none;
+}
+
+#workspaces button.focused {
+    color: #e8dff0;
+    background: #2e2640;
+    border-bottom: 2px solid #c87fa0;
+}
+
+#workspaces button.urgent {
+    color: #1a1624;
+    background: #c87fa0;
+    border-bottom: 2px solid #e8a0c0;
+}
+
+/* ---- Mode indicator ---- */
+#mode {
+    background: #c87fa0;
+    color: #1a1624;
+    padding: 0 10px;
+    font-weight: bold;
+    border: 1px solid #e8a0c0;
+}
+
+/* ---- Scratchpad ---- */
+#scratchpad {
+    color: #7b6b9e;
+    padding: 0 8px;
+    border: 1px solid #c87fa0;
+}
+
+#scratchpad:hover {
+    color: #a08bc0;
+}
+
+/* ---- Shared module style ---- */
+#workspaces,
+#window,
+#mpris,
+#pulseaudio,
+#backlight,
+#battery,
+#network,
+#bluetooth,
+#clock,
+#tray {
+    background: #1a1624;
+    color: #a899b8;
+    padding: 0 10px;
+    border-left: 1px solid #2e2640;
+    /* Pink border on every module */
+    /*border: 1px solid #c87fa0;*/
+    margin: 3px 2px;
+}
+
+/* Hover state for interactive modules */
+#pulseaudio:hover,
+#network:hover,
+#bluetooth:hover,
+#battery:hover {
+    color: #e8dff0;
+    background: #2e2640;
+}
+
+/* ---- Clock — centered, most prominent ---- */
+/*#clock {
+    color: #c8bfd8;
+    background: #221d2e;
+    padding: 0 14px;
+    border: 1px solid #c87fa0;
+    margin: 3px 2px;
+}
+
+*/
+
+/* ---- MPRIS (music) ---- */
+#mpris,
+#window {
+    color: #4a9e8a;
+}
+
+/* ---- Volume ---- */
+#pulseaudio {
+    color: #7b6b9e;
+}
+
+#pulseaudio.muted {
+    color: #3d3355;
+}
+
+/* ---- Backlight ---- */
+#backlight {
+    color: #a08bc0;
+}
+
+/* ---- Battery ---- */
+#battery {
+    color: #4a9e8a;
+}
+
+#battery.charging {
+    color: #6ab8a8;
+}
+
+#battery.warning {
+    color: #c8a060;
+}
+
+#battery.critical {
+    color: #c87fa0;
+    animation: blink 1s steps(1) infinite;
+}
+
+@keyframes blink {
+    0% {
+        color: #c87fa0;
+    }
+
+    50% {
+        color: #1a1624;
+        background: #c87fa0;
+    }
+
+    100% {
+        color: #c87fa0;
+    }
+}
+
+/* ---- Network ---- */
+#network {
+    color: #c87fa0;
+}
+
+#network.disconnected {
+    color: #3d3355;
+}
+
+/* ---- Bluetooth ---- */
+#bluetooth {
+    color: #7b6b9e;
+}
+
+#bluetooth.connected {
+    color: #a08bc0;
+}
+
+#bluetooth.disabled {
+    color: #3d3355;
+}
+
+/* ---- Tray ---- */
+#tray {
+    padding: 0 8px;
+    /*border: 1px solid #c87fa0;*/
+    margin: 3px 2px;
+}
+
+#tray>.passive {
+    -gtk-icon-effect: dim;
+}
+
+#tray>.needs-attention {
+    -gtk-icon-effect: highlight;
+    background: #c87fa0;
+}

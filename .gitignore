@@ -1,0 +1,5 @@
+cat > ~/dotfiles/.gitignore << 'EOF'
+*.local
+*.bak
+.DS_Store
+EOF

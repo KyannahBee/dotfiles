@@ -1,0 +1,129 @@
+{
+    "layer": "top",
+    "position": "bottom",
+    "height": 35,
+    "spacing": 0,
+    "margin-top": 0,
+    "margin-bottom": 0,
+
+    "modules-left": [
+        "sway/workspaces",
+        "sway/mode",
+        "sway/scratchpad"
+        /*"sway/window"*/
+    ],
+    "modules-center": [
+        "clock"
+    ],
+    "modules-right": [
+        // "mpris",
+        "pulseaudio",
+        "backlight",
+        "battery",
+        "network",
+        "bluetooth",
+        "tray"
+    ],
+
+    "sway/workspaces": {
+        "disable-scroll": false,
+        "all-outputs": false,
+        // Pango markup cycles colors per workspace number.
+        // Pattern repeats every 5 so workspace 6 = same color as 1, etc.
+        //"format": "<span foreground='{color}'>{name}</span>",
+        "format": "<span foreground='#c87fa0'>{name}</span>",
+        "format-icons": {},
+        "persistent-workspaces": {
+            "1": [],
+            "2": [],
+            "3": [],
+            "4": [],
+            "5": []
+        }
+    },
+
+    "sway/mode": {
+        "format": " {}"
+    },
+
+    "sway/scratchpad": {
+        "format": "{icon} {count}",
+        "show-empty": false,
+        "format-icons": ["", ""],
+        "tooltip": true,
+        "tooltip-format": "{app}: {title}"
+    },
+
+    "sway/window": {
+        "format": "{}",
+        "max-length": 500,
+        "tooltip": false,
+        "rewrite": {
+            "": "nothing to see :("
+        }
+    },
+
+    "mpris": {
+        "format": "♪ {artist} — {title}",
+        "format-paused": "⏸ {artist} — {title}",
+        "format-stopped": "",
+        "max-length": 500,
+        "tooltip": false
+    },
+
+    "pulseaudio": {
+        "format": "{icon} {volume}%",
+        "format-muted": "󰖁",
+        "format-icons": {
+            "default": ["󰕿", "󰖀", "󰕾"]
+        },
+        "on-click": "pavucontrol",
+        "scroll-step": 2,
+        "tooltip": false
+    },
+
+    "backlight": {
+        "format": "{icon} {percent}%",
+        "format-icons": ["󰃞", "󰃝", "󰃟", "󰃠"],
+        "tooltip": false
+    },
+
+    "battery": {
+        "states": {
+            "warning": 30,
+            "critical": 15
+        },
+        "format": "{icon} {capacity}%",
+        "format-charging": "󰂄 {capacity}%",
+        "format-plugged": "󰚥 {capacity}%",
+        "format-icons": ["󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹"],
+        "tooltip": false
+    },
+
+    "network": {
+        "format-wifi": "󰤨 {essid}",
+        "format-ethernet": "󰈀",
+        "format-disconnected": "󰤭",
+        "max-length": 20,
+        "on-click": "foot -e nmtui",
+        "tooltip": false
+    },
+
+    "bluetooth": {
+        "format": "󰂯",
+        "format-connected": "󰂱 {device_alias}",
+        "format-disabled": "󰂲",
+        // No empty string for disabled — always renders
+        "tooltip": false,
+        "on-click": "blueman-manager"
+    },
+
+    "clock": {
+        "format": "{:%a %d %b  %H:%M}",
+        "tooltip": false
+    },
+
+    "tray": {
+        "spacing": 8
+    }
+}

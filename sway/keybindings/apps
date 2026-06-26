@@ -1,0 +1,4 @@
+bindsym $mod+f exec firefox
+bindsym $mod+e exec dolphin
+bindsym $mod+d exec flatpak run com.discordapp.Discord
+bindsym $mod+Shift+d exec /home/kyannahm/Documents/Personal/Beeper-4.1.1.AppImage

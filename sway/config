@@ -1,0 +1,401 @@
+# ============================================================
+# SWAY CONFIG — pixel art castle theme
+# Translated from Hyprland/Caelestia config
+# Colors sampled from: fantasy-castle-pixel-art wallpaper
+# Purple sky: #7b6b9e | Stone: #c8bfd8 | Water: #3d4a7a
+# Dark bg: #1a1624 | Pink accent: #c87fa0 | Teal trees: #4a9e8a
+# ============================================================
+
+# --- Variables: Apps ---
+set $terminal kitty
+set $browser firefox
+set $editor neovim
+set $fileexplorer thunar
+set $launcher tofi-drun
+set $locker gtklock
+
+# --- Variables: Colors (wallpaper palette) ---
+set $bg         #1a1624
+set $bg2        #221d2e
+set $surface    #2e2640
+set $purple     #7b6b9e
+set $purple_hi  #a08bc0
+set $stone      #c8bfd8
+set $pink       #c87fa0
+set $teal       #4a9e8a
+set $water      #3d4a7a
+set $text       #e8dff0
+set $subtext    #a899b8
+set $border_act #c87fa0
+set $border_in  #3d3355
+
+# --- Monitor ---
+output eDP-1 scale 1.25 position 0 0
+output HDMI-A-1 scale 1.25 position 1536 0
+#output HDMI-A-1 scale 1 position 0 0
+output 'LG Electronics LG ULTRAFINE 205NTCZ95835' scale 1.5 position -512 -1440
+
+# --- Wallpaper ---
+# Copy your wallpaper to ~/.config/sway/wallpaper.jpg first
+output * bg ~/.config/sway/wallpaper.jpg fill
+
+# Reduce unnecessary redraws
+output * adaptive_sync on
+output * max_render_time 6
+
+# --- Input ---
+input type:keyboard {
+    xkb_layout us
+    repeat_delay 250
+    repeat_rate 35
+}
+
+input type:touchpad {
+    natural_scroll enabled
+    dwt enabled
+    scroll_factor 0.3
+    tap enabled
+}
+
+input "2:14:ETPS/2_Elantech_Touchpad" {
+    natural_scroll enabled
+    dwt enabled
+    scroll_factor 0.3
+}
+
+input "1386:21018:Wacom_HID_521A_Finger" events disabled
+
+# Mouse sensitivity for HP mouse (closest sway equivalent)
+input "pointer:hp-mouse" {
+    pointer_accel -0.8
+}
+
+# --- Appearance ---
+default_border pixel 2
+default_floating_border pixel 2
+gaps inner 2
+gaps outer 2
+smart_gaps off
+
+# Window border colors:         border        background    text          indicator     child_border
+client.focused                  $border_act   $bg           $text         $purple_hi    $border_act
+client.focused_inactive         $border_in    $bg           $subtext      $surface      $border_in
+client.unfocused                $border_in    $bg           $subtext      $surface      $border_in
+client.urgent                   $pink         $bg           $text         $pink         $pink
+
+# Font (pixel-friendly monospace; change to Creep2 or scientifica if installed)
+font pango:JetBrains Mono NF 11
+
+# --- Autostart ---
+exec_always {
+    # Polkit
+    /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
+    # Keyring
+    gnome-keyring-daemon --start --components=secrets
+    # Clipboard history
+    wl-paste --type text --watch cliphist store
+    wl-paste --type image --watch cliphist store
+    # Night light / gamma
+    gammastep
+    # Notification daemon
+    dunst
+    # Status bar
+    waybar
+    # Cursor theme
+    gsettings set org.gnome.desktop.interface cursor-theme 'Adwaita'
+    gsettings set org.gnome.desktop.interface cursor-size 15
+}
+
+exec {
+    # Media proxy for bluetooth
+    mpris-proxy
+    # Trash cleanup (30 days)
+    trash-empty 30
+}
+
+# --- Environment ---
+set $env_vars \
+    QT_QPA_PLATFORMTHEME=qt6ct \
+    QT_WAYLAND_DISABLE_WINDOWDECORATION=1 \
+    QT_AUTO_SCREEN_SCALE_FACTOR=1 \
+    GDK_BACKEND=wayland,x11 \
+    QT_QPA_PLATFORM=wayland;xcb \
+    SDL_VIDEODRIVER=wayland \
+    CLUTTER_BACKEND=wayland \
+    ELECTRON_OZONE_PLATFORM_HINT=auto \
+    XDG_CURRENT_DESKTOP=sway \
+    XDG_SESSION_TYPE=wayland \
+    XDG_SESSION_DESKTOP=sway \
+    _JAVA_AWT_WM_NONREPARENTING=1 \
+    XCURSOR_THEME=Adwaita \
+    XCURSOR_SIZE=24
+
+# Pass env to systemd/dbus so apps launched outside sway get them too
+exec systemctl --user import-environment DISPLAY WAYLAND_DISPLAY SWAYSOCK XDG_CURRENT_DESKTOP XDG_SESSION_TYPE
+exec dbus-update-activation-environment --systemd DISPLAY WAYLAND_DISPLAY SWAYSOCK XDG_CURRENT_DESKTOP XDG_SESSION_TYPE
+
+# --- Layout ---
+workspace_layout default
+
+# Focus on window close goes to previous focused
+# (sway default behavior, no config needed)
+
+# Focus follows mouse
+focus_follows_mouse yes
+
+# Mouse warps to focused window center
+mouse_warping container
+
+# Middle click paste disabled
+# (handled per-app; no global sway option)
+
+# --- Window Rules ---
+
+# Float rules
+for_window [app_id="guifetch"]                      floating enable
+for_window [app_id="yad"]                           floating enable
+for_window [app_id="zenity"]                        floating enable
+for_window [app_id="blueman-manager"]               floating enable
+for_window [app_id="feh"]                           floating enable
+for_window [app_id="imv"]                           floating enable
+for_window [app_id="org.gnome.FileRoller"]          floating enable
+for_window [app_id="file-roller"]                   floating enable
+for_window [app_id="org.gnome.Settings"]            floating enable, resize set 70ppt 80ppt, move position center
+for_window [app_id="org.pulseaudio.pavucontrol"]    floating enable, resize set 60ppt 70ppt, move position center
+for_window [app_id="nwg-look"]                      floating enable, resize set 50ppt 60ppt, move position center
+for_window [app_id="system-config-printer"]         floating enable
+for_window [app_id="qps"]                           floating enable
+
+# nmtui in kitty
+for_window [app_id="kitty" title="nmtui"]           floating enable, resize set 60ppt 70ppt, move position center
+
+# Dialogs
+for_window [title="^(Select|Open)( a)? (File|Folder)(s)?$"]    floating enable
+for_window [title="^File (Operation|Upload)( Progress)?$"]      floating enable
+for_window [title=".* Properties$"]                             floating enable
+for_window [title="^Export Image as PNG$"]                      floating enable
+for_window [title="^Save As$"]                                  floating enable
+for_window [title="^Library$"]                                  floating enable
+
+# Steam
+for_window [app_id="steam" title="Friends List"]    floating enable
+
+# Picture-in-picture
+for_window [title="^Picture[-( ]in[-( ][Pp]icture"] \
+    floating enable, sticky enable, resize set 30ppt 30ppt, move position 69ppt 67ppt
+
+# Creative software — opacity stays at 1 (sway doesn't do per-app opacity as elegantly)
+# Games stay fullscreen naturally
+
+# --- Workspaces ---
+# Named workspaces for special use (sway equivalent of special workspaces)
+set $ws1  "1"
+set $ws2  "2"
+set $ws3  "3"
+set $ws4  "4"
+set $ws5  "5"
+set $ws6  "6"
+set $ws7  "7"
+set $ws8  "8"
+set $ws9  "9"
+set $ws10 "10"
+set $ws_sysmon  "__sysmon"
+set $ws_music   "__music"
+set $ws_comms   "__comms"
+set $ws_todo    "__todo"
+
+# Assign apps to special scratchpad workspaces
+#for_window [app_id="btop"]                          move to scratchpad
+#for_window [app_id="feishin|Spotify|Plexamp"]       move to scratchpad
+#for_window [app_id="discord|vesktop|equibop"]       move to scratchpad
+#for_window [app_id="Todoist"]                       move to scratchpad
+
+# ============================================================
+# KEYBINDS
+# Translated 1:1 from keybinds.conf where possible
+# Caelestia-specific binds replaced with standard equivalents
+# ============================================================
+
+set $mod Mod4
+
+# --- Apps ---
+bindsym $mod+Return         exec $terminal
+bindsym $mod+f              exec $browser
+bindsym $mod+c              exec $editor
+bindsym $mod+e              exec $fileexplorer
+bindsym $mod+Alt+e          exec nemo
+bindsym $mod+g              exec github-desktop
+bindsym Ctrl+Alt+Escape     exec qps
+bindsym Ctrl+Alt+v          exec pavucontrol
+
+# --- Launcher (replaces caelestia:launcher) ---
+bindsym $mod+space          exec $launcher --drun-launch=true
+
+# --- Clipboard (replaces caelestia clipboard) ---
+bindsym $mod+v              exec cliphist list | tofi | cliphist decode | wl-copy
+bindsym $mod+Alt+v          exec cliphist list | tofi | cliphist decode | wl-copy
+
+# --- Emoji picker ---
+bindsym $mod+period         exec bemoji
+
+# --- Screenshot (replaces caelestia screenshot) ---
+bindsym Print               exec grim
+bindsym $mod+Shift+s        exec grim
+bindsym $mod+Shift+Alt+s    exec grim
+
+# --- Screen record (replaces caelestia record) ---
+bindsym $mod+Alt+r          exec wf-recorder -a -f ~/Videos/recording-$(date +%Y%m%d-%H%M%S).mp4
+bindsym Ctrl+Alt+r          exec wf-recorder -f ~/Videos/recording-$(date +%Y%m%d-%H%M%S).mp4
+bindsym $mod+Shift+Alt+r    exec slurp | wf-recorder --geometry="$(slurp)" -f ~/Videos/recording-$(date +%Y%m%d-%H%M%S).mp4
+
+# --- Color picker (replaces hyprpicker) ---
+bindsym $mod+Shift+c        exec hyprpicker -a
+
+# --- Session / power (replaces caelestia:session, wlogout) ---
+bindsym Ctrl+Alt+Delete     exec wlogout
+bindsym $mod+Shift+l        exec systemctl suspend-then-hibernate
+
+# --- Lock (replaces caelestia:lock) ---
+bindsym $mod+l              exec $locker
+
+# --- Notifications (replaces caelestia:clearNotifs) ---
+bindsym Ctrl+Alt+c          exec dunstctl close-all
+
+# --- Volume ---
+bindsym --locked XF86AudioMute         exec wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle
+bindsym --locked XF86AudioMicMute      exec wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle
+bindsym --locked $mod+Shift+m          exec wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle
+bindsym --locked XF86AudioRaiseVolume  exec wpctl set-mute @DEFAULT_AUDIO_SINK@ 0 && wpctl set-volume -l 1 @DEFAULT_AUDIO_SINK@ 2%+
+bindsym --locked XF86AudioLowerVolume  exec wpctl set-mute @DEFAULT_AUDIO_SINK@ 0 && wpctl set-volume @DEFAULT_AUDIO_SINK@ 2%-
+bindsym Ctrl+$mod+space     exec playerctl play-pause
+bindsym XF86AudioPlay       exec playerctl play-pause
+bindsym XF86AudioPause      exec playerctl play-pause
+bindsym Ctrl+$mod+equal     exec playerctl next
+bindsym XF86AudioNext       exec playerctl next
+bindsym Ctrl+$mod+minus     exec playerctl previous
+bindsym XF86AudioPrev       exec playerctl previous
+bindsym XF86AudioStop       exec playerctl stop
+
+# --- Brightness ---
+bindsym XF86MonBrightnessUp     exec brightnessctl set 5%+
+bindsym XF86MonBrightnessDown   exec brightnessctl set 5%-
+
+# --- Window focus (arrow keys) ---
+bindsym $mod+Left           focus left
+bindsym $mod+Right          focus right
+bindsym $mod+Up             focus up
+bindsym $mod+Down           focus down
+
+# --- Window move ---
+bindsym $mod+Shift+Left     move left
+bindsym $mod+Shift+Right    move right
+bindsym $mod+Shift+Up       move up
+bindsym $mod+Shift+Down     move down
+bindsym $mod+greater move workspace to output right
+bindsym $mod+less move workspace to output left
+
+# --- Split ratio equivalent (sway: resize) ---
+bindsym $mod+minus          resize shrink width 50px
+bindsym $mod+equal          resize grow width 50px
+
+# --- Fullscreen ---
+bindsym $mod+Shift+f        fullscreen toggle
+bindsym $mod+Alt+f          fullscreen toggle global
+
+# --- Floating ---
+bindsym $mod+Alt+space      floating toggle
+
+# --- Center window ---
+bindsym Ctrl+$mod+backslash move position center
+bindsym Ctrl+$mod+Alt+backslash resize set 55ppt 70ppt; move position center
+
+# --- Close window ---
+bindsym $mod+q              kill
+
+# --- Mouse window management ---
+floating_modifier $mod normal
+bindsym --whole-window $mod+button1 move window
+bindsym --whole-window $mod+button3 resize window
+
+# --- Tabs / layout cycling (replaces window groups) ---
+bindsym Alt+Tab             focus next sibling
+bindsym Shift+Alt+Tab       focus prev sibling
+bindsym Ctrl+Alt+Tab        layout toggle tabbed splith splitv
+
+# --- Workspaces: switch ---
+bindsym $mod+1  workspace number $ws1
+bindsym $mod+2  workspace number $ws2
+bindsym $mod+3  workspace number $ws3
+bindsym $mod+4  workspace number $ws4
+bindsym $mod+5  workspace number $ws5
+bindsym $mod+6  workspace number $ws6
+bindsym $mod+7  workspace number $ws7
+bindsym $mod+8  workspace number $ws8
+bindsym $mod+9  workspace number $ws9
+bindsym $mod+0  workspace number $ws10
+
+# --- Workspaces: move window ---
+bindsym $mod+Alt+1  move container to workspace number $ws1
+bindsym $mod+Alt+2  move container to workspace number $ws2
+bindsym $mod+Alt+3  move container to workspace number $ws3
+bindsym $mod+Alt+4  move container to workspace number $ws4
+bindsym $mod+Alt+5  move container to workspace number $ws5
+bindsym $mod+Alt+6  move container to workspace number $ws6
+bindsym $mod+Alt+7  move container to workspace number $ws7
+bindsym $mod+Alt+8  move container to workspace number $ws8
+bindsym $mod+Alt+9  move container to workspace number $ws9
+bindsym $mod+Alt+0  move container to workspace number $ws10
+
+# --- Workspaces: prev/next ---
+bindsym Ctrl+$mod+Right     workspace next
+bindsym Ctrl+$mod+Left      workspace prev
+bindsym $mod+button4        workspace prev
+bindsym $mod+button5        workspace next
+bindsym $mod+Page_Up        workspace prev
+bindsym $mod+Page_Down      workspace next
+
+# Move window prev/next workspace
+bindsym $mod+Alt+Page_Up        move container to workspace prev
+bindsym $mod+Alt+Page_Down      move container to workspace next
+bindsym Ctrl+$mod+Shift+Right   move container to workspace next
+bindsym Ctrl+$mod+Shift+Left    move container to workspace prev
+
+# --- Scratchpad (replaces special workspaces) ---
+bindsym $mod+s              scratchpad show
+bindsym Ctrl+$mod+Shift+Up     move to scratchpad
+bindsym Ctrl+$mod+Shift+Down   scratchpad show
+
+# System monitor scratchpad toggle
+bindsym Ctrl+Shift+Escape   exec swaymsg '[app_id="btop"] scratchpad show' || kitty --class btop -e btop
+
+# Music scratchpad toggle
+bindsym $mod+m              scratchpad show
+
+# Comms scratchpad toggle
+bindsym $mod+d              exec swaymsg '[app_id="discord"] scratchpad show' || exec vesktop
+
+# Todo scratchpad toggle
+bindsym $mod+r              exec swaymsg '[app_id="Todoist"] scratchpad show' || exec todoist
+
+# --- Pin window (sticky) ---
+bindsym $mod+p              sticky toggle
+
+# --- Reload sway config ---
+bindsym Ctrl+$mod+Shift+r  reload
+
+# --- Resize mode ---
+mode "resize" {
+    bindsym Left   resize shrink width 20px
+    bindsym Right  resize grow width 20px
+    bindsym Up     resize shrink height 20px
+    bindsym Down   resize grow height 20px
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+bindsym $mod+x mode "resize"
+
+# ============================================================
+# PIXEL ART SPECIFIC: no blur, no rounded corners, sharp edges
+# borders act as the pixel "outline" aesthetic
+# ============================================================
+hide_edge_borders smart

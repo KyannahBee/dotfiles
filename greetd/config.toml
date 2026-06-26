@@ -1,0 +1,21 @@
+# /etc/greetd/config.toml
+# Install: pacman -S greetd greetd-tuigreet
+#
+# After installing:
+#   sudo systemctl disable sddm
+#   sudo systemctl enable greetd
+#
+# Copy this file to /etc/greetd/config.toml
+
+[terminal]
+vt = 1
+
+[default_session]
+# tuigreet: terminal UI greeter — retro, pixel-appropriate
+# --time: show clock
+# --remember: remember last user
+# --remember-session: remember last session
+# --sessions: path to session files (auto-finds wayland + xsessions)
+command = "tuigreet --time --remember --remember-session --sessions /usr/share/wayland-sessions:/usr/share/xsessions --theme 'border=magenta;text=white;prompt=green;time=cyan;action=blue;button=yellow;container=black;input=red'"
+
+user = "greeter"
