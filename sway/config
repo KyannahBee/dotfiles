@@ -230,6 +230,10 @@ bindsym Ctrl+Alt+v          exec pavucontrol
 
 # --- Launcher (replaces caelestia:launcher) ---
 bindsym $mod+space          exec $launcher --drun-launch=true
+bindsym $mod+w exec rofi -show wifi -modi "wifi:$HOME/dotfiles/sway/scripts/wifi.sh" -theme $HOME/.config/rofi/shared.rasi -theme $HOME/.config/rofi/position/bottom.rasi
+bindsym $mod+b exec rofi -show bt -modi "bt:$HOME/dotfiles/sway/scripts/bluetooth.sh" -theme $HOME/.config/rofi/shared.rasi -theme $HOME/.config/rofi/position/bottom.rasi
+bindsym $mod+p exec rofi -show vol -modi "vol:$HOME/dotfiles/sway/scripts/volume.sh" -theme $HOME/.config/rofi/shared.rasi -theme $HOME/.config/rofi/position/bottom.rasi
+bindsym $mod+h exec rofi -show brt -modi "brt:$HOME/dotfiles/sway/scripts/brightness.sh" -theme $HOME/.config/rofi/shared.rasi -theme $HOME/.config/rofi/position/bottom.rasi
 
 # --- Clipboard (replaces caelestia clipboard) ---
 bindsym $mod+v              exec cliphist list | tofi | cliphist decode | wl-copy
@@ -378,7 +382,7 @@ bindsym $mod+d              exec swaymsg '[app_id="discord"] scratchpad show' ||
 bindsym $mod+r              exec swaymsg '[app_id="Todoist"] scratchpad show' || exec todoist
 
 # --- Pin window (sticky) ---
-bindsym $mod+p              sticky toggle
+bindsym $mod+alt+p             sticky toggle
 
 # --- Reload sway config ---
 bindsym Ctrl+$mod+Shift+r  reload

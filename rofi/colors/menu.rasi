@@ -1,0 +1,41 @@
+/**
+ * colors/default.rasi — palette for shared.rasi (custom script-mode menus)
+ *
+ * NAMED menu.rasi (NOT default.rasi) deliberately: rofi/colors/default.rasi
+ * already exists in your repo (Nord palette) and is imported by
+ * rofi/themes/new.rasi, which backs your existing, working config.rasi
+ * app-launcher. Reusing "default.rasi" here would have overwritten that
+ * file and broken the launcher. This file is only ever imported by
+ * shared.rasi — the two color files and the two themes never touch.
+ *
+ * Source: sway/config variables + waybar/style.css header comment
+ *   bg dark:    #1a1624
+ *   bg mid:     #2e2640
+ *   purple:     #7b6b9e
+ *   purple hi:  #a08bc0
+ *   stone:      #c8bfd8
+ *   pink:       #c87fa0  (accent)
+ *   teal:       #4a9e8a  (good/connected)
+ *   water:      #3d4a7a
+ *   text:       #e8dff0
+ *   subtext:    #a899b8
+ */
+
+* {
+    transparent:      #00000000;
+
+    bg:               #1a1624;
+    surface:          #2e2640;
+    border-active:    #c87fa0;
+    border-inactive:  #3d3355;
+
+    text:             #e8dff0;
+    subtext:          #a899b8;
+
+    accent:           #c87fa0;  /* pink — selection / prompt */
+    accent-alt:       #7b6b9e;  /* purple — secondary accent */
+
+    good:             #4a9e8a;  /* teal — connected / on */
+    warning:          #a08bc0;  /* purple-hi — mid signal/charge */
+    critical:         #c87fa0;  /* reuse pink — castle theme has no harsh red */
+}

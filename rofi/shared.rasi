@@ -1,0 +1,97 @@
+/**
+ * shared.rasi — theme for custom script-mode menus
+ * (wifi / bluetooth / volume / brightness)
+ *
+ * Separate from config.rasi (the app-launcher) — do not merge.
+ * Palette sourced from sway/config + waybar/style.css (pixel-art castle theme).
+ *
+ * Usage: rofi -dmenu -theme ~/.config/rofi/shared.rasi @import position/bottom.rasi
+ * (position file imported by each script, not baked in here, so menus can
+ * be top or bottom without duplicating this file)
+ */
+
+@import "colors/menu.rasi"
+
+* {
+    font:               "JetBrains Mono NF 12";
+    text-color:         @text;
+    background-color:   @transparent;
+}
+
+window {
+    transparency:       "real";
+    width:               420px;
+    border:              1px;
+    border-color:        @border-active;
+    border-radius:       6px;
+    background-color:    @bg;
+}
+
+mainbox {
+    background-color:    transparent;
+    children:            [ "inputbar", "message", "listview" ];
+    spacing:              4px;
+    padding:              8px;
+}
+
+inputbar {
+    background-color:    @surface;
+    text-color:           @text;
+    border-radius:        4px;
+    padding:              8px 10px;
+    children:             [ "prompt", "entry" ];
+}
+
+prompt {
+    text-color:           @accent;
+}
+
+entry {
+    placeholder-color:    @subtext;
+    placeholder:          "Type to filter...";
+}
+
+message {
+    background-color:     @surface;
+    text-color:            @subtext;
+    border-radius:         4px;
+    padding:               6px 10px;
+}
+
+listview {
+    background-color:     transparent;
+    lines:                 8;
+    scrollbar:              false;
+    spacing:                2px;
+    cycle:                  true;
+    dynamic:                true;
+}
+
+element {
+    background-color:      transparent;
+    text-color:             @text;
+    border-radius:          4px;
+    padding:                6px 10px;
+}
+
+element selected {
+    background-color:      @surface;
+    text-color:             @accent;
+    border:                 0px 0px 0px 2px;
+    border-color:           @accent;
+}
+
+element-text {
+    background-color:       inherit;
+    text-color:              inherit;
+    vertical-align:          0.5;
+}
+
+error-message {
+    background-color:        @bg;
+    text-color:               @critical;
+    border:                   1px;
+    border-color:             @critical;
+    border-radius:            4px;
+    padding:                  10px;
+}

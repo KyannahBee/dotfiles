@@ -1,0 +1,15 @@
+/**
+ * position/bottom.rasi — anchors menu above waybar
+ *
+ * waybar/config.jsonc has "position": "bottom", "height": 35 — menus
+ * anchor to bottom-right with enough margin to clear the bar.
+ * Imported by each script (not by shared.rasi) so menus stay swappable
+ * between top/bottom independent of the base theme.
+ */
+
+window {
+    location:    south east;
+    anchor:      south east;
+    x-offset:    -12px;
+    y-offset:    -45px;  /* 35px bar height + 10px gap */
+}

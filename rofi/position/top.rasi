@@ -1,0 +1,13 @@
+/**
+ * position/top.rasi — anchors menu below a top bar
+ * Not your current setup (waybar is bottom-positioned) — included
+ * for parity since the repo tree lists top.rasi alongside bottom.rasi.
+ * Symlink position/active.rasi -> bottom.rasi per your existing convention.
+ */
+
+window {
+    location:    north east;
+    anchor:      north east;
+    x-offset:    -12px;
+    y-offset:    45px;
+}

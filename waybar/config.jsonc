@@ -77,7 +77,8 @@
         "format-icons": {
             "default": ["󰕿", "󰖀", "󰕾"]
         },
-        "on-click": "pavucontrol",
+        "on-click": "rofi -show vol -modi \"vol:$HOME/dotfiles/sway/scripts/volume.sh\" -theme $HOME/.config/rofi/shared.rasi -theme $HOME/.config/rofi/position/bottom.rasi",
+        "on-click-right": "pavucontrol",
         "scroll-step": 2,
         "tooltip": false
     },
@@ -85,6 +86,7 @@
     "backlight": {
         "format": "{icon} {percent}%",
         "format-icons": ["󰃞", "󰃝", "󰃟", "󰃠"],
+        "on-click": "rofi -show brt -modi \"brt:$HOME/dotfiles/sway/scripts/brightness.sh\" -theme $HOME/.config/rofi/shared.rasi -theme $HOME/.config/rofi/position/bottom.rasi",
         "tooltip": false
     },
 
@@ -105,7 +107,8 @@
         "format-ethernet": "󰈀",
         "format-disconnected": "󰤭",
         "max-length": 20,
-        "on-click": "foot -e nmtui",
+        "on-click": "rofi -show wifi -modi \"wifi:$HOME/dotfiles/sway/scripts/wifi.sh\" -theme $HOME/.config/rofi/shared.rasi -theme $HOME/.config/rofi/position/bottom.rasi",
+        "on-click-right": "foot -e nmtui",
         "tooltip": false
     },
 
@@ -115,7 +118,8 @@
         "format-disabled": "󰂲",
         // No empty string for disabled — always renders
         "tooltip": false,
-        "on-click": "blueman-manager"
+        "on-click": "rofi -show bt -modi \"bt:$HOME/dotfiles/sway/scripts/bluetooth.sh\" -theme $HOME/.config/rofi/shared.rasi -theme $HOME/.config/rofi/position/bottom.rasi",
+        "on-click-right": "blueman-manager"
     },
 
     "clock": {
