@@ -59,8 +59,8 @@ input "pointer:hp-mouse" {
 # --- Appearance ---
 default_border pixel 2
 default_floating_border pixel 2
-gaps inner 0
-gaps outer 0
+gaps inner 3
+gaps outer 3
 smart_gaps off
 
 # Window border colors:         border        background    text          indicator     child_border
@@ -199,8 +199,6 @@ set $ws_todo    "__todo"
 
 # ============================================================
 # KEYBINDS
-# Translated 1:1 from keybinds.conf where possible
-# Caelestia-specific binds replaced with standard equivalents
 # ============================================================
 
 set $mod Mod4
@@ -215,7 +213,7 @@ bindsym $mod+g              exec github-desktop
 bindsym Ctrl+Alt+Escape     exec qps
 bindsym Ctrl+Alt+v          exec pavucontrol
 
-# --- Launcher (replaces caelestia:launcher) ---
+# --- Launcher  ---
 #bindsym $mod+space exec $launcher --drun-launch=true #for tofi
 bindsym $mod+space exec $launcher -show drun #for rofi
 bindsym $mod+w exec rofi -show wifi -modi "wifi:$HOME/dotfiles/sway/scripts/wifi.sh" -theme $HOME/.config/rofi/shared.rasi -theme $HOME/.config/rofi/position/bottom.rasi
@@ -223,34 +221,34 @@ bindsym $mod+b exec rofi -show bt -modi "bt:$HOME/dotfiles/sway/scripts/bluetoot
 bindsym $mod+p exec rofi -show vol -modi "vol:$HOME/dotfiles/sway/scripts/volume.sh" -theme $HOME/.config/rofi/shared.rasi -theme $HOME/.config/rofi/position/bottom.rasi
 bindsym $mod+h exec rofi -show brt -modi "brt:$HOME/dotfiles/sway/scripts/brightness.sh" -theme $HOME/.config/rofi/shared.rasi -theme $HOME/.config/rofi/position/bottom.rasi
 
-# --- Clipboard (replaces caelestia clipboard) ---
+# --- Clipboard ---
 bindsym $mod+v              exec cliphist list | tofi | cliphist decode | wl-copy
 bindsym $mod+Alt+v          exec cliphist list | tofi | cliphist decode | wl-copy
 
 # --- Emoji picker ---
 bindsym $mod+period         exec bemoji
 
-# --- Screenshot (replaces caelestia screenshot) ---
+# --- Screenshot ---
 bindsym Print               exec grim
 bindsym $mod+Shift+s        exec grim
 bindsym $mod+Shift+Alt+s    exec grim
 
-# --- Screen record (replaces caelestia record) ---
+# --- Screen record ---
 bindsym $mod+Alt+r          exec wf-recorder -a -f ~/Videos/recording-$(date +%Y%m%d-%H%M%S).mp4
 bindsym Ctrl+Alt+r          exec wf-recorder -f ~/Videos/recording-$(date +%Y%m%d-%H%M%S).mp4
 bindsym $mod+Shift+Alt+r    exec slurp | wf-recorder --geometry="$(slurp)" -f ~/Videos/recording-$(date +%Y%m%d-%H%M%S).mp4
 
-# --- Color picker (replaces hyprpicker) ---
+# --- Color picker ---
 bindsym $mod+Shift+c        exec hyprpicker -a
 
-# --- Session / power (replaces caelestia:session, wlogout) ---
+# --- Session / power ---
 bindsym Ctrl+Alt+Delete     exec wlogout
 bindsym $mod+Shift+l        exec systemctl suspend-then-hibernate
 
-# --- Lock (replaces caelestia:lock) ---
+# --- Lock ---
 bindsym $mod+l              exec $locker
 
-# --- Notifications (replaces caelestia:clearNotifs) ---
+# --- Notifications ---
 bindsym Ctrl+Alt+c          exec dunstctl close-all
 
 # --- Volume ---
@@ -379,16 +377,16 @@ bindsym Ctrl+$mod+Shift+r  reload
 
 # --- Resize mode ---
 mode "resize" {
-    bindsym Left   resize shrink width 20px
-    bindsym Right  resize grow width 20px
-    bindsym Up     resize shrink height 20px
-    bindsym Down   resize grow height 20px
+    bindsym h   resize shrink width 20px
+    bindsym l  resize grow width 20px
+    bindsym k     resize shrink height 20px
+    bindsym j   resize grow height 20px
     bindsym Return mode "default"
     bindsym Escape mode "default"
 }
 bindsym $mod+x mode "resize"
 
-# ============================================================
+# =====================================================
 # PIXEL ART SPECIFIC: no blur, no rounded corners, sharp edges
 # borders act as the pixel "outline" aesthetic
 # ============================================================
