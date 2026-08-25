@@ -1,0 +1,18 @@
+/* pixel-castle colorscheme — waybar palette */
+
+@define-color bg          #1a1624;
+@define-color bg2         #221d2e;
+@define-color surface     #2e2640;
+@define-color purple      #7b6b9e;
+@define-color purple_hi   #a08bc0;
+@define-color stone       #c8bfd8;
+@define-color pink        #c87fa0;
+@define-color pink_hi     #e8a0c0;
+@define-color teal        #4a9e8a;
+@define-color teal_hi     #6ab8a8;
+@define-color gold        #c8a060;
+@define-color water       #3d4a7a;
+@define-color text        #e8dff0;
+@define-color subtext     #a899b8;
+@define-color border_act  #c87fa0;
+@define-color border_in   #3d3355;

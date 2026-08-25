@@ -3,14 +3,15 @@
  * (wifi / bluetooth / volume / brightness)
  *
  * Separate from config.rasi (the app-launcher) — do not merge.
- * Palette sourced from sway/config + waybar/style.css (pixel-art castle theme).
+ * Colors come from the active colorscheme (see colorschemes/switch.sh),
+ * the same one config.rasi's pixel-castle.rasi theme uses.
  *
  * Usage: rofi -dmenu -theme ~/.config/rofi/shared.rasi @import position/bottom.rasi
  * (position file imported by each script, not baked in here, so menus can
  * be top or bottom without duplicating this file)
  */
 
-@import "colors/menu.rasi"
+@import "colorscheme.rasi"
 
 * {
     font:               "JetBrains Mono NF 12";
@@ -22,7 +23,7 @@ window {
     transparency:       "real";
     width:               420px;
     border:              1px;
-    border-color:        @border-active;
+    border-color:        @border-act;
     border-radius:       6px;
     background-color:    @bg;
 }
@@ -43,7 +44,7 @@ inputbar {
 }
 
 prompt {
-    text-color:           @accent;
+    text-color:           @pink;
 }
 
 entry {
@@ -76,9 +77,9 @@ element {
 
 element selected {
     background-color:      @surface;
-    text-color:             @accent;
+    text-color:             @pink;
     border:                 0px 0px 0px 2px;
-    border-color:           @accent;
+    border-color:           @pink;
 }
 
 element-text {
@@ -89,9 +90,9 @@ element-text {
 
 error-message {
     background-color:        @bg;
-    text-color:               @critical;
+    text-color:               @pink;
     border:                   1px;
-    border-color:             @critical;
+    border-color:             @pink;
     border-radius:            4px;
     padding:                  10px;
 }

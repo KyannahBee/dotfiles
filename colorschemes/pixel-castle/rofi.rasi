@@ -1,0 +1,23 @@
+/**
+ * pixel-castle colorscheme — rofi palette
+ * Shared by rofi/themes/pixel-castle.rasi (launcher) and
+ * rofi/shared.rasi (wifi/bluetooth/volume/brightness script menus).
+ */
+
+* {
+    transparent: #00000000;
+
+    bg:          #1a1624;
+    bg2:         #221d2e;
+    surface:     #2e2640;
+    purple:      #7b6b9e;
+    purple-hi:   #a08bc0;
+    stone:       #c8bfd8;
+    pink:        #c87fa0;
+    teal:        #4a9e8a;
+    water:       #3d4a7a;
+    text:        #e8dff0;
+    subtext:     #a899b8;
+    border-act:  #c87fa0;
+    border-in:   #3d3355;
+}

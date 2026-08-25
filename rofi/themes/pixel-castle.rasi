@@ -1,6 +1,7 @@
 /**
  * Pixel Castle — rofi launcher theme
- * Palette matches waybar/style.css + kitty.conf
+ * Structure only; colors come from the active colorscheme
+ * (see colorschemes/switch.sh)
  */
 
 configuration {
@@ -12,18 +13,9 @@ configuration {
     window-format:              "{w} · {c} · {t}";
 }
 
-* {
-    bg:         #1a1624;
-    bg-alt:     #2e2640;
-    purple:     #7b6b9e;
-    purple-hi:  #a08bc0;
-    stone:      #c8bfd8;
-    pink:       #c87fa0;
-    teal:       #4a9e8a;
-    text:       #e8dff0;
-    subtext:    #a899b8;
-    border-col: #3d3355;
+@import "../colorscheme.rasi"
 
+* {
     background-color: transparent;
     text-color:        @text;
 }
@@ -45,10 +37,10 @@ mainbox {
 }
 
 inputbar {
-    background-color: @bg-alt;
+    background-color: @surface;
     text-color:         @text;
     border:             0px 0px 1px 0px;
-    border-color:       @border-col;
+    border-color:       @border-in;
     padding:             10px 12px;
     children:           [ "prompt", "entry" ];
     spacing:             8px;
@@ -94,7 +86,7 @@ element-text {
 }
 
 element selected {
-    background-color: @bg-alt;
+    background-color: @surface;
     text-color:         @text;
     border:             0px 0px 0px 2px;
     border-color:       @pink;
