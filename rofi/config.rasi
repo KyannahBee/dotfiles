@@ -21,7 +21,7 @@ configuration {
 /*	dpi: -1;*/
 
 	/*---------- Matching setting ----------*/
-	matching: "normal";
+	matching: "fuzzy";
 	tokenize: true;
 
 	/*---------- SSH settings ----------*/
@@ -67,8 +67,8 @@ configuration {
 /*	combi-display-format: "{mode} {text}";*/
 
 	/*---------- History and Sorting ----------*/
-	disable-history: false;
-	sorting-method: "normal";
+	disable-history: true;
+	sorting-method: "fzf";
 	max-history-size: 25;
 
 	/*---------- Display setting ----------*/
@@ -84,7 +84,7 @@ configuration {
 	/*---------- Misc setting ----------*/
 	terminal: "rofi-sensible-terminal";
 	font: "Mono 14";
-	sort: false;
+	sort: true;
 	threads: 0;
 	click-to-exit: true;
 /*	ignored-prefixes: "";*/
@@ -180,5 +180,6 @@ configuration {
 */
 }
 
-@theme "~/.config/rofi/themes/new.rasi"
+// @theme "~/.config/rofi/themes/new.rasi"
 // @theme "~/.config/rofi/themes/sidebar.rasi"
+@theme "~/.config/rofi/themes/pixel-castle.rasi"

@@ -1,7 +1,5 @@
 # ============================================================
 # SWAY CONFIG — pixel art castle theme
-# Translated from Hyprland/Caelestia config
-# Colors sampled from: fantasy-castle-pixel-art wallpaper
 # Purple sky: #7b6b9e | Stone: #c8bfd8 | Water: #3d4a7a
 # Dark bg: #1a1624 | Pink accent: #c87fa0 | Teal trees: #4a9e8a
 # ============================================================
@@ -11,7 +9,8 @@ set $terminal kitty
 set $browser firefox
 set $editor neovim
 set $fileexplorer thunar
-set $launcher tofi-drun
+# set $launcher tofi-drun
+set $launcher rofi
 set $locker gtklock
 
 # --- Variables: Colors (wallpaper palette) ---
@@ -32,8 +31,9 @@ set $border_in  #3d3355
 # --- Monitor ---
 output eDP-1 scale 1.25 position 0 0
 output HDMI-A-1 scale 1.25 position 1536 0
-#output HDMI-A-1 scale 1 position 0 0
 output 'LG Electronics LG ULTRAFINE 205NTCZ95835' scale 1.5 position -512 -1440
+output 'Philips Consumer Electronics Company PHL 242B1 UHB2336037517' scale 1 position -192 -1080 mode 1920x1080@74.973Hz
+output 'Philips Consumer Electronics Company Philips FTV 0x01010101' scale 1 position 0 -1080
 
 # --- Wallpaper ---
 # Copy your wallpaper to ~/.config/sway/wallpaper.jpg first
@@ -73,8 +73,8 @@ input "pointer:hp-mouse" {
 # --- Appearance ---
 default_border pixel 2
 default_floating_border pixel 2
-gaps inner 2
-gaps outer 2
+gaps inner 0
+gaps outer 0
 smart_gaps off
 
 # Window border colors:         border        background    text          indicator     child_border
@@ -85,6 +85,7 @@ client.urgent                   $pink         $bg           $text         $pink 
 
 # Font (pixel-friendly monospace; change to Creep2 or scientifica if installed)
 font pango:JetBrains Mono NF 11
+seat * xcursor_theme Pink-Paw 20
 
 # --- Autostart ---
 exec_always {
@@ -102,8 +103,8 @@ exec_always {
     # Status bar
     waybar
     # Cursor theme
-    gsettings set org.gnome.desktop.interface cursor-theme 'Adwaita'
-    gsettings set org.gnome.desktop.interface cursor-size 15
+    gsettings set org.gnome.desktop.interface cursor-theme 'Pink-Paw'
+    gsettings set org.gnome.desktop.interface cursor-size 20
 }
 
 exec {
@@ -127,7 +128,7 @@ set $env_vars \
     XDG_SESSION_TYPE=wayland \
     XDG_SESSION_DESKTOP=sway \
     _JAVA_AWT_WM_NONREPARENTING=1 \
-    XCURSOR_THEME=Adwaita \
+    XCURSOR_THEME=Pink-Paw \
     XCURSOR_SIZE=24
 
 # Pass env to systemd/dbus so apps launched outside sway get them too
@@ -229,7 +230,8 @@ bindsym Ctrl+Alt+Escape     exec qps
 bindsym Ctrl+Alt+v          exec pavucontrol
 
 # --- Launcher (replaces caelestia:launcher) ---
-bindsym $mod+space          exec $launcher --drun-launch=true
+#bindsym $mod+space exec $launcher --drun-launch=true #for tofi
+bindsym $mod+space exec $launcher -show drun #for rofi
 bindsym $mod+w exec rofi -show wifi -modi "wifi:$HOME/dotfiles/sway/scripts/wifi.sh" -theme $HOME/.config/rofi/shared.rasi -theme $HOME/.config/rofi/position/bottom.rasi
 bindsym $mod+b exec rofi -show bt -modi "bt:$HOME/dotfiles/sway/scripts/bluetooth.sh" -theme $HOME/.config/rofi/shared.rasi -theme $HOME/.config/rofi/position/bottom.rasi
 bindsym $mod+p exec rofi -show vol -modi "vol:$HOME/dotfiles/sway/scripts/volume.sh" -theme $HOME/.config/rofi/shared.rasi -theme $HOME/.config/rofi/position/bottom.rasi
@@ -295,8 +297,10 @@ bindsym $mod+Shift+Left     move left
 bindsym $mod+Shift+Right    move right
 bindsym $mod+Shift+Up       move up
 bindsym $mod+Shift+Down     move down
-bindsym $mod+greater move workspace to output right
-bindsym $mod+less move workspace to output left
+#bindsym $mod+greater move workspace to output right
+#bindsym $mod+less move workspace to output left
+bindsym $mod+greater move workspace to output right, move workspace to output up
+bindsym $mod+less move workspace to output left, move workspace to output down
 
 # --- Split ratio equivalent (sway: resize) ---
 bindsym $mod+minus          resize shrink width 50px
