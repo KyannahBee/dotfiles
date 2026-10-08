@@ -22,14 +22,18 @@ ICON_DISCONNECT="󰤭 Disconnect"
 notify() { notify-send -a "WiFi" "$1" "${2:-}" 2>/dev/null || true; }
 
 list_networks() {
+    # Field separator is \x1f (unit separator), not tab: bash's `read`
+    # treats tab as IFS-whitespace and trims a leading empty field even
+    # when IFS is set to tab alone, which shifts every non-connected row
+    # left by one field (SECURITY ends up printed where SSID belongs).
     nmcli -t -f IN-USE,SSID,SECURITY,SIGNAL device wifi list --rescan no 2>/dev/null \
         | awk -F: '{
             if ($2 == "" ) next   # skip hidden/blank SSIDs
             inuse = ($1 == "*") ? "*" : ""
-            printf "%s\t%s\t%s\t%s\n", inuse, $2, $3, $4
+            printf "%s\x1f%s\x1f%s\x1f%s\n", inuse, $2, $3, $4
         }' \
-        | sort -t$'\t' -k1,1r -k4,4nr \
-        | awk -F'\t' '!seen[$2]++ { print }'
+        | sort -t$'\x1f' -k1,1r -k4,4nr \
+        | awk -F'\x1f' '!seen[$2]++ { print }'
 }
 
 show_menu() {
@@ -42,14 +46,15 @@ show_menu() {
         echo -en "\0message\x1f Not connected\n"
     fi
 
-    list_networks | while IFS=$'\t' read -r inuse ssid security signal; do
+    echo "$ICON_RESCAN"
+
+    list_networks | while IFS=$'\x1f' read -r inuse ssid security signal; do
         icon="$ICON_SAVED"
         [ -z "$security" ] && icon="$ICON_OPEN"
         [ "$inuse" = "*" ] && icon="$ICON_CONNECTED"
         printf "%s  %s  (%s%%)\n" "$icon" "$ssid" "$signal"
     done
 
-    echo "$ICON_RESCAN"
     [ -n "$current" ] && echo "$ICON_DISCONNECT"
 }
 

@@ -15,11 +15,19 @@ set $locker gtklock
 include ~/.config/sway/colorscheme.conf
 
 # --- Monitor ---
+# Internal monitor
 output eDP-1 scale 1.25 position 0 0
-output HDMI-A-1 scale 1.25 position 1536 0
-output 'LG Electronics LG ULTRAFINE 205NTCZ95835' scale 1.5 position -512 -1440
+# Any non-registered screen will default to this
+output HDMI-A-1 scale 1.25 position 1536 0 
+# At kot 1st=left, 2nd=under
+output 'AOC Q24P2W1 HCMN2HA007270' scale 1.25 position -2048 -288
+# output 'AOC Q24P2W1 HCMN2HA007270' scale 1.25 position -256 -1152
+# At home
 output 'Philips Consumer Electronics Company PHL 242B1 UHB2336037517' scale 1 position -192 -1080 mode 1920x1080@74.973Hz
+# Tv appartment
 output 'Philips Consumer Electronics Company Philips FTV 0x01010101' scale 1 position 0 -1080
+# WATT 
+output 'LG Electronics LG ULTRAFINE 501NTBK0Z029' scale 1.5 position -512 -1440
 
 # --- Wallpaper ---
 # Copy your wallpaper to ~/.config/sway/wallpaper.jpg first
@@ -59,8 +67,8 @@ input "pointer:hp-mouse" {
 # --- Appearance ---
 default_border pixel 2
 default_floating_border pixel 2
-gaps inner 3
-gaps outer 3
+gaps inner 0
+gaps outer 0
 smart_gaps off
 
 # Window border colors:         border        background    text          indicator     child_border
@@ -229,9 +237,10 @@ bindsym $mod+Alt+v          exec cliphist list | tofi | cliphist decode | wl-cop
 bindsym $mod+period         exec bemoji
 
 # --- Screenshot ---
-bindsym Print               exec grim
-bindsym $mod+Shift+s        exec grim
-bindsym $mod+Shift+Alt+s    exec grim
+bindsym Print            exec grimshot --notify savecopy area
+bindsym $mod+Shift+s     exec grimshot --notify savecopy area
+bindsym Shift+Print      exec grimshot --notify savecopy output
+bindsym Ctrl+Print       exec grimshot --notify savecopy active
 
 # --- Screen record ---
 bindsym $mod+Alt+r          exec wf-recorder -a -f ~/Videos/recording-$(date +%Y%m%d-%H%M%S).mp4

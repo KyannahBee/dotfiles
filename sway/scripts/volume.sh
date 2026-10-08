@@ -2,11 +2,11 @@
 # volume.sh — rofi script-mode volume menu
 # Deps: wpctl (WirePlumber/PipeWire)
 #
-# DECIDED: static stepped list (Option A), not live arrow-key redraw.
-# Rofi script mode has no real in-place redraw — any arrow-key-driven
-# live stepping closes and reopens the window per step (visible flicker),
-# which isn't fixable within script mode. Static list trades "feels like
-# a slider" for reliability.
+# Device picker mirroring pavucontrol's Output Devices tab (already the
+# right-click fallback for this module): lists real output sinks, marks
+# the current default, and switches the default sink on selection.
+# Per-device volume stepping is intentionally left out — hardware volume
+# keys and waybar's scroll binding already call wpctl directly.
 
 set -euo pipefail
 
@@ -15,22 +15,12 @@ THEME="$THEME_DIR/shared.rasi"
 POSITION="$THEME_DIR/position/bottom.rasi"
 
 SINK="@DEFAULT_AUDIO_SINK@"
-STEP=5      # percent per row
-MAX=150     # wpctl allows >100%; cap the list at a sane ceiling
 
+ICON_DEFAULT="󰓃"
+ICON_SINK="󰓄"
 ICON_MUTE_TOGGLE="󰖁 Toggle Mute"
 
-bar() {
-    local pct=$1 width=20
-    local filled=$(( pct * width / 100 ))
-    [ "$filled" -gt "$width" ] && filled=$width
-    [ "$filled" -lt 0 ] && filled=0
-    local empty=$(( width - filled ))
-    local out=""
-    [ "$filled" -gt 0 ] && out+="$(printf '█%.0s' $(seq 1 "$filled"))"
-    [ "$empty" -gt 0 ] && out+="$(printf '░%.0s' $(seq 1 "$empty"))"
-    printf '%s' "$out"
-}
+notify() { notify-send -a "Volume" "$1" "${2:-}" 2>/dev/null || true; }
 
 current_pct() {
     wpctl get-volume "$SINK" | awk '{printf "%d", $2 * 100}'
@@ -38,6 +28,25 @@ current_pct() {
 
 is_muted() {
     wpctl get-volume "$SINK" | grep -q MUTED
+}
+
+# Emits "<id>\x1f<default?>\x1f<name>\x1f<vol%>" per sink, in the order
+# wpctl status lists them under "Sinks:".
+list_sinks() {
+    wpctl status | awk '
+        /├─ Sinks:/ { insinks=1; next }
+        /├─ Sources:/ { insinks=0 }
+        insinks && /vol:/ { print }
+    ' | while read -r line; do
+        if [[ "$line" =~ ^\│[[:space:]]*(\*)?[[:space:]]*([0-9]+)\.[[:space:]]*(.+)[[:space:]]*\[vol:[[:space:]]*([0-9.]+)\] ]]; then
+            default="${BASH_REMATCH[1]}"
+            id="${BASH_REMATCH[2]}"
+            name="$(echo "${BASH_REMATCH[3]}" | sed 's/[[:space:]]*$//')"
+            vol="${BASH_REMATCH[4]}"
+            pct=$(awk -v v="$vol" 'BEGIN{printf "%d", v*100}')
+            printf '%s\x1f%s\x1f%s\x1f%s\n' "$id" "$default" "$name" "$pct"
+        fi
+    done
 }
 
 show_menu() {
@@ -51,16 +60,32 @@ show_menu() {
 
     echo "$ICON_MUTE_TOGGLE"
 
-    local pct=0
-    while [ "$pct" -le "$MAX" ]; do
-        marker=" "
-        # mark the row closest to current volume
-        if [ "$pct" -ge "$((cur - STEP/2))" ] && [ "$pct" -lt "$((cur + STEP/2 + (STEP%2)))" ]; then
-            marker="●"
-        fi
-        printf "%s %s %3d%%\n" "$marker" "$(bar "$pct")" "$pct"
-        pct=$(( pct + STEP ))
+    list_sinks | while IFS=$'\x1f' read -r id default name pct; do
+        icon="$ICON_SINK"
+        [ "$default" = "*" ] && icon="$ICON_DEFAULT"
+        printf "%s  %s  (%s%%)\n" "$icon" "$name" "$pct"
     done
+}
+
+id_for_name() {
+    # `|| true`: awk exits as soon as it finds a match, which closes the
+    # pipe early and SIGPIPEs list_sinks — under `set -o pipefail` that
+    # would otherwise make this whole function (and the caller, under
+    # `set -e`) fail even though the right id was found.
+    list_sinks | awk -F'\x1f' -v n="$1" '$3==n{print $1; exit}' || true
+}
+
+set_default() {
+    local name="$1"
+    local id
+    id=$(id_for_name "$name")
+    [ -z "$id" ] && { notify "Device not found" "$name"; return; }
+
+    if wpctl set-default "$id" &>/dev/null; then
+        notify "Default output" "$name"
+    else
+        notify "Failed to switch" "$name"
+    fi
 }
 
 # --- Entry point ---
@@ -76,12 +101,10 @@ case "$1" in
         wpctl set-mute "$SINK" toggle
         ;;
     *)
-        # Extract trailing "NNN%" from the selected row
-        pct="${1##* }"
-        pct="${pct%\%}"
-        if [[ "$pct" =~ ^[0-9]+$ ]]; then
-            wpctl set-mute "$SINK" 0
-            wpctl set-volume "$SINK" "${pct}%"
-        fi
+        # Strip the leading icon + two spaces, then strip trailing " (NN%)"
+        name="${1#* }"
+        name="${name#* }"
+        name="${name%  (*}"
+        set_default "$name"
         ;;
 esac
